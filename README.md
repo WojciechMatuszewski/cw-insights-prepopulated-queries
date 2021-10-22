@@ -1,5 +1,7 @@
 # CloudWatch Insights Prepopulated Queries
 
+**Work in progress. A blog post will follow**
+
 Have you ever opened the "Queries" tab in the _AWS CloudWatch Insights_ console?
 While we can save existing queries, would not it be nice to have them defined as code?
 
