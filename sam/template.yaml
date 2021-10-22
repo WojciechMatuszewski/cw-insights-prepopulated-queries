@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: sam-app
+
+Globals:
+  Function:
+    Timeout: 5
+    Handler: main
+    Runtime: go1.x
+
+Resources:
+  HiHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: handler
+      Tracing: Active
+      Events:
+        GET:
+          Type: HttpApi
+          Properties:
+            Path: /
+            Method: GET
+
+  CustomResourceHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: custom-resource
+      Tracing: Active
+      Policies:
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: logs:PutQueryDefinition
+              Resource: arn:aws:logs:*:*:*
+
+  ListLogsInsightsQuery:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !Sub ${CustomResourceHandler.Arn}
+      QueryString: >
+        fields @timestamp, @logStream, @message
+        | sort @timestamp desc
+      QueryName: List logs
+
+Outputs:
+  HiAPI:
+    Value: !Sub https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/
