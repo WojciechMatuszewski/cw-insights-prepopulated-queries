@@ -33,11 +33,41 @@ Resources:
               Action: logs:PutQueryDefinition
               Resource: arn:aws:logs:*:*:*
 
+  ByAPIGWRequestIdInsightsQuery:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !Sub ${CustomResourceHandler.Arn}
+      QueryString: |
+        fields @timestamp, @logStream, @message
+        | sort @timestamp desc
+        | filter @requestId = "PASTE_REQUEST_ID_HERE"
+      QueryName: By APIGW RequestId
+
+  ByXRayTraceIdInsightsQuery:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !Sub ${CustomResourceHandler.Arn}
+      QueryString: |
+        fields @timestamp, @logStream, @message
+        | sort @timestamp desc
+        | filter @xrayTraceId = "PASTE_TRACE_ID_HERE"
+      QueryName: By X-Ray TraceId
+
+  LambdaTimeoutsInsightsQuery:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !Sub ${CustomResourceHandler.Arn}
+      QueryString: |
+        fields @timestamp, @logStream, @message
+        | sort @timestamp desc
+        | filter @message like /task timed out/
+      QueryName: Find AWS Lambda timeouts
+
   ListLogsInsightsQuery:
     Type: AWS::CloudFormation::CustomResource
     Properties:
       ServiceToken: !Sub ${CustomResourceHandler.Arn}
-      QueryString: >
+      QueryString: |
         fields @timestamp, @logStream, @message
         | sort @timestamp desc
       QueryName: List logs

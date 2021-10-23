@@ -12,7 +12,10 @@ import (
 )
 
 func main() {
-	cfg, err := config.LoadDefaultConfig(context.Background())
+	cfg, err := config.LoadDefaultConfig(
+		context.Background(),
+		// One might use structural loggig for better output in CloudWatch logs console.
+	)
 	if err != nil {
 		panic(err)
 	}
