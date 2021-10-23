@@ -30,8 +30,10 @@ Resources:
         - Version: 2012-10-17
           Statement:
             - Effect: Allow
-              Action: logs:PutQueryDefinition
-              Resource: arn:aws:logs:*:*:*
+              Action:
+                - logs:PutQueryDefinition
+                - logs:DeleteQueryDefinition
+              Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
 
   ByAPIGWRequestIdInsightsQuery:
     Type: AWS::CloudFormation::CustomResource

@@ -70,6 +70,15 @@ class InsightsQuery extends cdk.Construct {
       this,
       "insightsQuery",
       {
+        policy: customResources.AwsCustomResourcePolicy.fromStatements([
+          new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            actions: ["logs:PutQueryDefinition", "logs:DeleteQueryDefinition"],
+            resources: [
+              `arn:aws:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`
+            ]
+          })
+        ]),
         onCreate: {
           action: "putQueryDefinition",
           service: "CloudWatchLogs",
@@ -80,13 +89,6 @@ class InsightsQuery extends cdk.Construct {
           physicalResourceId:
             customResources.PhysicalResourceId.fromResponse("queryDefinitionId")
         },
-        policy: customResources.AwsCustomResourcePolicy.fromStatements([
-          new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            actions: ["logs:PutQueryDefinition"],
-            resources: ["arn:aws:logs:*:*:*"]
-          })
-        ]),
         onUpdate: {
           action: "putQueryDefinition",
           service: "CloudWatchLogs",
