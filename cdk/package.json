@@ -9,7 +9,7 @@
     "watch": "tsc -w",
     "cdk": "cdk",
     "bootstrap": "npm run cdk bootstrap",
-    "deploy": "npm run cdk deploy -- --hotswap --disable-rollback"
+    "deploy": "npm run cdk deploy -- --hotswap --no-rollback"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.129.0",
