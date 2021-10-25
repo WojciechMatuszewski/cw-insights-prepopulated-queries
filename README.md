@@ -1,4 +1,4 @@
-# CloudWatch Insights Prepopulated Queries
+# Amazon CloudWatch Logs Insights Prepopulated Queries
 
 [Link to the blog post](https://dev.to/aws-builders/aws-cloudwatch-logs-insights-query-snippets-as-code-1l60).
 
